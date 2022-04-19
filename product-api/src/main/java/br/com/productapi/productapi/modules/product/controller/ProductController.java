@@ -1,8 +1,7 @@
 package br.com.productapi.productapi.modules.product.controller;
 
 import br.com.productapi.productapi.config.exception.SuccessResponse;
-import br.com.productapi.productapi.modules.product.dto.ProductRequest;
-import br.com.productapi.productapi.modules.product.dto.ProductResponse;
+import br.com.productapi.productapi.modules.product.dto.*;
 import br.com.productapi.productapi.modules.product.service.ProductService;
 import br.com.productapi.productapi.modules.product.dto.ProductResponse;
 import br.com.productapi.productapi.modules.product.service.ProductService;
@@ -57,5 +56,15 @@ public class ProductController {
     @PutMapping("{id}")
     public ProductResponse update(@RequestBody ProductRequest request, @PathVariable Integer id) {
         return productService.update(request, id);
+    }
+
+    @PostMapping("check-stock") // existe também o que valida que tá dentro do rabbitmq, mas esse é importante também ANTES da compra
+    public SuccessResponse checkProductStock(@RequestBody ProductCheckStockRequest request) {
+        return productService.checkProductStock(request);
+    }
+
+    @GetMapping("{productId}/sales")
+    public ProductSalesResponse findProductSales(@PathVariable Integer id) {
+        return productService.findProductSales(id);
     }
 }

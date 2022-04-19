@@ -6,6 +6,7 @@ spring:
     name: product-api
   main:
     allow-circular-references: true
+    allow-bean-definition-override: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/product-db
@@ -26,6 +27,28 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
 
+  rabbit-mq:
+    host: ${RABBIT_MQ_HOST:localhost}
+    port: ${RABBIT_MQ_HOST:5672}
+    username: ${RABBIT_MQ_HOST:guest}
+    password: ${RABBIT_MQ_HOST:guest}
+
 app-config:
+
+  services:
+    sales: http://${SALES_HOST:localhost}:${SALES_PORT:8082}
+
   secrets:
     api-secret: ${API_SECRET:YXV0aC1hcGktc2VjcmV0LWRldi1qaG93}
+
+  rabbit:
+    exchange:
+      product: product.topic
+
+    routingKey:
+      product-stock: product-stock-update.routingKey
+      sales-confirmation: sales-confirmation.routingKey
+
+    queue:
+      product-stock: product-stock-update.queue
+      sales-confirmation: sales-confirmation.queue
