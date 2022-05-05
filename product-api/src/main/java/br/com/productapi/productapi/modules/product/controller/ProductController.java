@@ -63,7 +63,7 @@ public class ProductController {
         return productService.checkProductStock(request);
     }
 
-    @GetMapping("{productId}/sales")
+    @GetMapping("{id}/sales")
     public ProductSalesResponse findProductSales(@PathVariable Integer id) {
         return productService.findProductSales(id);
     }

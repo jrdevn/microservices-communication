@@ -23,7 +23,15 @@ const OrderSchema = new Schema({ // define qual será o modelo (meio q a entidad
     updatedAt: {
         type: Date,
         required: true
-    }
+    }, 
+    transactionId: {
+        type: String,
+        required: true
+    }, 
+    serviceId: {
+        type: String,
+        required: true
+    }, 
 })
 
 export default model("Order", OrderSchema);

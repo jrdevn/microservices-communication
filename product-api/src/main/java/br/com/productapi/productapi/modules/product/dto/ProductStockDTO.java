@@ -13,5 +13,6 @@ public class ProductStockDTO {
 
     private String salesId; // isso vem da api de sales
     private List<ProductQuantityDTO> products;
+    private String transactionid;
 
 }

@@ -1,8 +1,8 @@
 import * as db from './src/config/db/initialData.js';
 
 import userRoutes from './src/modules/user/routes/UserRoute.js'
-import checkToken from "./src/config/auth/checkToken.js";
 import express from "express";
+import tracing from './src/config/tracing.js';
 
 
 const app = express();
@@ -12,7 +12,7 @@ const PORT = env.PORT || 8080;
 
 db.createInitialData(); 
 
-
+app.use(tracing);
 app.use(express.json());
 app.use(userRoutes);
 
