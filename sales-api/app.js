@@ -9,39 +9,27 @@ import tracing from './src/config/tracing.js';
 const app = express();
 const env = process.env;
 const PORT = env.PORT || 8082;
+const THREE_MINUTES = 180000;
+const CONTAINER_ENV = "container"
 
-connectMongoDb();
-connectRabbitMq();
-createInitialData();
+
+startApplication();
+
+async function startApplication() {
+    if (CONTAINER_ENV === env.NODE_ENV) { // validate container environments
+        console.info("Waiting for RabbitMQ and MongoDB containers to start...");
+        setInterval(() => {
+            connectMongoDb();
+            connectRabbitMq();
+        }, THREE_MINUTES);
+    } else {
+        connectMongoDb();
+        createInitialData();
+        connectRabbitMq();
+    }
+}
 
 app.use(express.json());
-app.use(tracing);
-app.use(checkToken);
-app.use(orderRoutes);
-
-// teste rabbitMQ
-// app.get('/teste', (req,res) => {
-//     try {
-//         sendNessageToProductStockUpdateQueue([
-//             {
-//                 productId: 1001,
-//                 quantity: 2
-//             },
-//             {
-//                 productId: 1003,
-//                 quantity: 1
-//             },
-//             {
-//                 productId: 1000,
-//                 quantity: 2
-//             },
-//         ])
-//         return res.status(200).json({status: 200})
-//     } catch (err) {
-//         console.log(err);
-//         return res.status(500).json({error: true})
-//     }
-// })
 
 app.get('/api/status', async (req, res) => {
     return res.status(200).json({
@@ -51,6 +39,14 @@ app.get('/api/status', async (req, res) => {
     })
 });
 
+app.get('/api/initial-data', async (req, res) => {
+    await createInitialData();
+    return res.json({message: "Data created."})
+});
+
+app.use(tracing);
+app.use(checkToken);
+app.use(orderRoutes);
 
 app.listen(PORT, () => {
     console.info(`Servidor inicializado na porta: ${PORT}`);

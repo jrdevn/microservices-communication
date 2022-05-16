@@ -13,7 +13,7 @@ import br.com.productapi.productapi.modules.sales.enums.SalesStatus;
 import br.com.productapi.productapi.modules.sales.rabbitmq.SalesConfirmationSender;
 import br.com.productapi.productapi.modules.supplier.service.SupplierService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;   
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
